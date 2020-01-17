@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css?family=Turret+Road&display=swap');
+
+body {
+  margin: 0 auto;
+  font-family: 'Turret Road', cursive;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.2rem;
+  width: 80%;
+  border-right: 0.5rem dashed purple;
+  border-left: 0.5rem dashed purple;
+  border-bottom: 0.5rem dashed gray;
+  padding-bottom: 2rem;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+header {
+  border-bottom: .5rem dashed gray;
+  padding-bottom: 2rem;
+}
+
+nav {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  margin: 1rem;
+  padding: 1rem;
+}
