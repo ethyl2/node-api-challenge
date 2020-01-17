@@ -86,6 +86,19 @@ router.delete('/:id', validateProjectId, (req, res) => {
         });
 });
 
+router.get('/:id/actions', validateProjectId, (req, res) => {
+    const id = req.params.id;
+    db.getProjectActions(id)
+        .then(response => {
+            console.log(response);
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err, message: `Unable to retrieve actions for project with id ${id}`});
+        });
+});
+
 
 function validateProjectId(req, res, next) {
     const id = req.params.id;
