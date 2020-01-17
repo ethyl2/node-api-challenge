@@ -4,7 +4,13 @@ import axios from 'axios';
 const Project = props => {
     const [project, setProject] = useState(null);
     const [actions, setActions] = useState(null);
-    const id = props.match.params;
+    const [id, setId] = useState(props.match.params);
+    //const id = props.match.params;
+
+    useEffect(() => {
+        setId(props.match.params);
+        setActions(null);
+    }, [props.match.params]);
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/projects/${id.id}`)
@@ -15,7 +21,7 @@ const Project = props => {
             .catch(err => {
                 console.log(err);
             });
-    }, [])
+    }, [id])
 
     const displayActions = () => {
         axios.get(`http://localhost:5000/api/projects/${project.id}/actions`)
