@@ -46,6 +46,24 @@ router.post('/', validateActionBody, (req, res) => {
         });
  });
 
+ router.put('/:id', validateActionBody, validateActionId, (req, res) => {
+    const id = req.params.id;
+    const updatedProject = req.body;
+    db.update(id, updatedProject)
+        .then(response => {
+            console.log(response);
+            if (response) {
+                res.status(201).json(response);
+            } else {
+                res.status(500).json({error: `There was an error while updating action ${id}`})
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err, message:`There was an error while updating action ${id}`});
+        });
+});
+
 
 function validateActionBody(req, res, next) {
     const newAction = req.body;
@@ -68,6 +86,23 @@ function validateActionBody(req, res, next) {
         .catch(err => {
             console.log(err);
             res.status(500).json({error: err, message: `The project with id ${newAction.project_id} could not be retrieved.`});
+        });
+};
+
+function validateActionId(req, res, next) {
+    const id = req.params.id;
+    db.get(id)
+        .then(response => {
+            console.log(response);
+            if (response) {
+                next();
+            } else {
+                res.status(404).json({message: `The action with id ${id} may not exist in the database`});
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err, message: `The action with id ${id} could not be retrieved.`});
         });
 };
 
