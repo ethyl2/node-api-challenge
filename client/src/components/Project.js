@@ -15,7 +15,7 @@ const Project = props => {
     useEffect(() => {
         axios.get(`http://localhost:5000/api/projects/${id.id}`)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 setProject(response.data);
             })
             .catch(err => {
@@ -26,7 +26,7 @@ const Project = props => {
     const displayActions = () => {
         axios.get(`http://localhost:5000/api/projects/${project.id}/actions`)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 setActions(response.data);
             })
             .catch(err => {
@@ -51,6 +51,7 @@ const Project = props => {
                             <h3>{action.description}</h3>
                             <p>Notes: {action.notes}</p>
                             <p>{action.completed? 'Completed': 'Not Completed'}</p>
+                            <hr />
                         </div>
                     )
                 }

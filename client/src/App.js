@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     axios.get('http://localhost:5000/api/projects')
       .then(response => {
-        console.log(response);
+        //console.log(response);
         setProjects(response.data);
       })
       .catch(err => {
@@ -25,16 +25,17 @@ function App() {
       <header>
         <h1>Projects and Actions
         </h1>
-
-      {projects && projects.map(project => {
-        return (
-          <div key={project.id}>
-            <Link to={`/projects/${project.id}`}>
-              {project.name}
-            </Link>
-          </div>
-        )
-      })}
+        <nav>
+          {projects && projects.map(project => {
+            return (
+              <div key={project.id}>
+                <Link to={`/projects/${project.id}`}>
+                  {project.name}
+                </Link>
+              </div>
+            )
+          })}
+        </nav>
       </header>
     <Route exact path='/projects' component={Home} />
     <Route exact path='/projects/:id' component={Project} />
