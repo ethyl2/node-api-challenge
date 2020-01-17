@@ -32,4 +32,22 @@ router.get('/:id', (req, res) => {
         });
 });
 
+router.post('/', (req, res) => {
+   const newProject = req.body;
+   if (!newProject.name || !newProject.description) {
+       res.status(400).json({error: "Please provide name and description for the project."});
+   } 
+   db.insert(newProject)
+    .then(response => {
+        console.log(response);
+        res.status(201).json(response);
+
+        })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({message: "There was an error while adding the new project to the database", error: err});
+    });
+
+});
+
 module.exports = router;
