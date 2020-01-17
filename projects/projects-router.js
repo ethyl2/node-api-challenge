@@ -47,7 +47,45 @@ router.post('/', (req, res) => {
         console.log(err);
         res.status(500).json({message: "There was an error while adding the new project to the database", error: err});
     });
-
 });
+
+router.put('/:id', validateProjectId, (req, res) => {
+    const id = req.params.id;
+    const updatedProject = req.body;
+    if (!updatedProject.name || !updatedProject.description) {
+        res.status(400).json({error: `Please provide the name and description of the updated project of id ${id}`});
+    }
+    db.update(id, updatedProject)
+        .then(response => {
+            console.log(response);
+            if (response) {
+                res.status(201).json(response);
+            } else {
+                res.status(500).json({error: `There was an error while updating project ${id}`})
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err, message:`There was an error while updating project ${id}`});
+        });
+});
+
+
+function validateProjectId(req, res, next) {
+    const id = req.params.id;
+    db.get(id)
+        .then(response => {
+            console.log(response);
+            if (response) {
+                next();
+            } else {
+                res.status(404).json({message: `The project with id ${id} may not exist in the database`});
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err, message: `The project with id ${id} could not be retrieved.`});
+        });
+};
 
 module.exports = router;
