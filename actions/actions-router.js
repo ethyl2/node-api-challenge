@@ -64,6 +64,22 @@ router.post('/', validateActionBody, (req, res) => {
         });
 });
 
+router.delete('/:id', validateActionId, (req, res) => {
+    const id = req.params.id;
+    db.remove(id)
+        .then(response => {
+            if (response === 1) {
+                res.status(200).json({message: `Deleted action with id ${id}`});
+            } else {
+                res.status(500).json({error: `There was an error while attempting to delete action with id ${id}`})
+            }
+        })
+        .catch(err=> {
+            console.log(err);
+            res.status(500).json({error: err, message: `There was an error while attempting to delete action with id ${id}`});
+        });
+});
+
 
 function validateActionBody(req, res, next) {
     const newAction = req.body;
