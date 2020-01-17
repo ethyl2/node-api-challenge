@@ -40,13 +40,77 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+
+1. One part is the Router() method that creates a router object. You can use it like a mini-application and add middleware and HTTP method routes (GET, etc.) to it. It’s handy because you can use a router for a particular root URL and separate your routes into different files.
+
+2. Another part is the request object, usually referred to as req. It has properties that can be handy to access, such as req.body, req.headers, req.method, and req.params. Extension methods can be added to the request object, too. (Extension methods are more commonly added to the response object, such as res.status() and res.send().)
+
+You can even add more properties to the request object, like in this validateUserId() middleware, which adds the response from querying the database to a req.user property:
+
+function validateUserId(req, res, next) {
+ 
+  userDb.getById(req.params.id)
+    .then(response => {
+        req.user = response.data;
+        next();
+    })
+    .catch(err => {
+      res.status(400).json({message: "invalid user id"})
+    });
+};
+
 - [ ] Describe Middleware?
+
+Middleware, when talking about Express, are functions that are used in a sequence. They have access to the req, res, and err objects, and to the next function in the request flow. They can be used globally in an application, or just applied to a specific route. If they don’t return a status code or call end(), they must call next() to keep the flow going (otherwise the request is left hanging). 
+
+They can do these things: 
+
+    Execute code.
+
+    Make changes to  req & res.
+
+    End the request.
+
+    Call the next middleware.
 
 - [ ] Describe a Resource?
 
+A resource is a thing that an application cares about and something we want to manage with our application. It is a noun in the ‘application domain.’ For example, in an e-commerce application, it could be the users, products, orders, etc. Then the application would have endpoints (URLs) that point to the locations of those resources available on a server.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+We can call res.status(<HTTP response status code goes here>), which will send the response status code back to the clients. Successful status codes are in the 200s, and they include:
+
+200 = the request has succeeded
+
+201 = created
+
+202 = accepted, but not yet acted upon
+
+204 = accepted, but no content to send back. However, the headers could be useful.
+
+Alternatively, we can send a status code in the 400s or 500s, depending on the situation, if the request was not successful.
+
 - [ ] How can we partition our application into sub-applications?
+
+We can use Express Routers to split the application into smaller ones that handle different routes related to the different resources in the application, such as a router for paths dealing with users (‘/api/users’) and another one with posts (‘/api/posts’). 
+
+In this example, in both /users/user-routes.js and /posts/post-routes.js, we would use const router = express.Router(); router.get(‘/’) etc. and module.exports = router.
+
+Then in an api/server.js file, we would import the routes. 
+
+const userRouter = require(‘../users/user-routes.js’); 
+
+const postRouter = require(‘../posts/post-routes.js’); 
+
+Then we would have the server use those routes:
+
+server.use(‘/api/users’, userRouter);
+
+server.use(‘/api/posts’, postRouter);
+
+We could also put other files related to the users inside the user folder, and files related to the posts in the posts folder.
+
 
 ## Minimum Viable Product
 
