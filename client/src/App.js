@@ -4,6 +4,7 @@ import './App.css';
 import { Route, Link } from 'react-router-dom';
 
 import Project from './components/Project';
+import Home from './components/Home';
 
 function App() {
   const [projects, setProjects] = useState(null);
@@ -24,9 +25,6 @@ function App() {
       <header>
         <h1>Projects and Actions
         </h1>
-      </header>
-
-    <Route exact path='/projects/:id' render={(props) => <Project {...props} projects={projects} />} />
 
       {projects && projects.map(project => {
         return (
@@ -37,6 +35,9 @@ function App() {
           </div>
         )
       })}
+      </header>
+    <Route exact path='/projects' component={Home} />
+    <Route exact path='/projects/:id' component={Project} />
 
     </div>
   );
@@ -45,3 +46,4 @@ function App() {
 export default App;
 
 //<Project project={project} />
+//render={(props) => <Project {...props} projects={projects}
