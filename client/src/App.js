@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import { Route, Link } from 'react-router-dom';
 
 import Project from './components/Project';
 
@@ -25,15 +26,22 @@ function App() {
         </h1>
       </header>
 
+    <Route exact path='/projects/:id' render={(props) => <Project {...props} projects={projects} />} />
+
       {projects && projects.map(project => {
         return (
           <div key={project.id}>
-            <Project project={project} />
+            <Link to={`/projects/${project.id}`}>
+              {project.name}
+            </Link>
           </div>
         )
       })}
+
     </div>
   );
 }
 
 export default App;
+
+//<Project project={project} />
